@@ -1,4 +1,4 @@
-# Swapping Autoencoder
+# Swapping Autoencoder Interface
 
 <p align="center">
 <b> An interactive interface for swapping autoencoder</b>
@@ -19,11 +19,16 @@ Our project build on the paper [Swapping Autoencoder for Deep Image Manipulation
 <div align="center">
   <img alt="Screenshot" src="imgs/demo2.png" />
 </div>
-
 <p float="left">
   <img src="imgs/lake-3.jpg.jpg" height="190" />
   <img src="imgs/aniket-deole-T-tOgjWZ0fQ-unspl.jpg" height="190" />
+  <img src="imgs/night-snow.jpg" height="190" />
   <img src="imgs/desert.jpeg.jpg" height="190" />
+  <img src="imgs/lake-2.jpg" height="190" />
+</p>
+
+<p align="center">
+<h6>Some images we genarated with the streamlit inerface</h6>
 </p>
 
 ## 📌 Prerequisites
@@ -38,7 +43,7 @@ Our project build on the paper [Swapping Autoencoder for Deep Image Manipulation
 1. python 3.8
 2. poetry (Check out poetry [here](https://python-poetry.org/))
 
-## Installation 🔧
+## 🔧 Installation
 
 ### Step One - install python dependencies
 
