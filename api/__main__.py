@@ -8,7 +8,10 @@ from api.util import UtitlState, tensor_to_PIL
 parser = argparse.ArgumentParser(
     description="Process some images", prog="api", formatter_class=argparse.ArgumentDefaultsHelpFormatter
 )
-parser.add_argument("--version", action="version", version="%(prog)s 1.0")
+
+__version__ = "1.0"
+
+parser.add_argument("--version", action="version", version=__version__)
 
 parser.add_argument("img1", metavar="Structure", help="Path to Structure one")
 parser.add_argument("img2", metavar="Style", help="Path to Style two")
@@ -25,7 +28,7 @@ UtitlState.debug(args.debug)
 
 SAE = SwAeController(args.model)
 SAE.set_size(512)
-SAE.set_tex(args.img1)
+SAE.set_structure(args.img1)
 SAE.mix_style(args.img2, args.alpha)
 
 output_image = tensor_to_PIL(SAE.compute()[0])

@@ -16,12 +16,17 @@ class SwAeController:
     transform: Union[torchvision.transforms.Compose, None] = None
     global_sty: Union[torch.Tensor, None] = None
     global_tex: Union[torch.Tensor, None] = None
-    tex_path: str = None
+    structure_path: Union[str, None] = None
     cache: Dict = {}
     sty_argumentation: OrderedDict = OrderedDict()
 
     @timing
     def __init__(self, name: str) -> None:
+        """Initilise the model and other options
+
+        Args:
+            name (str): [description]
+        """
         self.opt = Global_config(isTrain=False, name=name)
         self.model = SwappingAutoencoderModel(self.opt)
         self.model.initialize()
@@ -34,16 +39,25 @@ class SwAeController:
         return get_transform(self.opt, **kwarg)
 
     @timing
-    def set_size(self, size: int):
-        if size < 0:
-            raise ValueError("Can not set negetive size")
+    def set_size(self, size: int) -> None:
+        """Sets transform to load images with the `size`. Output is also of width `size`. It must be greater than 128 and must be a multiple of 4.
+
+
+        Args:
+            size (int): size of the ouput image.
+
+        Raises:
+            ValueError: if the size is not a valid integer.
+        """
+        if size < 0 or size % 2 == 1 or size < 128:
+            raise ValueError("invalid size")
         self.load_size = size
 
         # need to reload transforms with new size
         self.transform = self._get_transform()
 
     @timing
-    def load_image(self, path) -> torch.Tensor:
+    def _load_image(self, path) -> torch.Tensor:
         img = Image.open(path).convert("RGB")
         if self.transform == None:
             self.transform = self._get_transform()
@@ -51,12 +65,17 @@ class SwAeController:
         return tensor
 
     @timing
-    def set_tex(self, tex_path):
-        if tex_path == None and self.tex_path == tex_path:
+    def set_structure(self, structure_path: str) -> None:
+        """set the structure, must be called before compute(). Doesn't cache the image. But, sets the noise input for the model
+
+        Args:
+            structure_path (str): path to the structure image
+        """
+        if structure_path == None and self.structure_path == structure_path:
             return
-        if self.tex_path == None:
-            self.tex_path = tex_path
-        source = self.load_image(tex_path).to("cuda")
+        if self.structure_path == None:
+            self.structure_path = structure_path
+        source = self._load_image(structure_path).to("cuda")
         with torch.no_grad():
             self.model(sample_image=source, command="fix_noise")
             self.global_tex, self.global_sty = self.encode(source)
@@ -72,13 +91,19 @@ class SwAeController:
     def load_encode_cache(self, path: str) -> Tuple[torch.Tensor, torch.Tensor]:
         if path in self.cache:
             return self.cache[path]
-        im = self.load_image(path)
+        im = self._load_image(path)
         tex, sty = self.encode(im)
         self.cache[path] = tex, sty
         return tex, sty
 
     @timing
-    def mix_style(self, style_path, alpha):
+    def mix_style(self, style_path: str, alpha: float) -> None:
+        """Mixes the style of the image given with the current structure image by the factor of alpha. Caches the encoded image. actual mixing happens when `compute()` is called
+
+        Args:
+            style_path (str): Path to the image whose style you want to mix
+            alpha (float): Value of mix factor. 0 would remove this image from the mix, 1 implies using NONE of the original styles
+        """
         if alpha == 0:
             if style_path in self.sty_argumentation:
                 del self.sty_argumentation[style_path]
@@ -90,7 +115,12 @@ class SwAeController:
         self.sty_argumentation[style_path] = alpha
 
     @timing
-    def compute(self):
+    def compute(self) -> torch.Tensor:
+        """Computes the output of the operations performed by the mix_style and gives the output image
+
+        Returns:
+            torch.Tensor: output tensor with the shape Tensor with shape (1, 3, h, w) where `h` and `w` are height and width.
+        """
         assert self.global_sty != None and self.global_tex != None
         torch.cuda.empty_cache()
         local_sty = self.global_sty.clone()

@@ -40,7 +40,7 @@ size = st.sidebar.selectbox(
     "Size:", ("128", "256", "512", "640"), format_func=lambda x: f"{x} px", help="Size of the ouput image"
 )
 st.session_state.SAE.set_size(int(size))
-st.session_state.SAE.set_tex(st.session_state.STR)
+st.session_state.SAE.set_structure(st.session_state.STR)
 opt = st.sidebar.slider(
     "Options to load", 3, len(st.session_state.images), help="No. of option images to load for style mix", step=2
 )
@@ -57,7 +57,7 @@ with Trans:
         help="Choose the structure image from the options below",
     )
     st.session_state.STR = IM
-    st.session_state.SAE.set_tex(IM)
+    st.session_state.SAE.set_structure(IM)
     st.image(st.session_state.STR, "Orignal Structure Image")
 
 
