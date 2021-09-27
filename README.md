@@ -12,7 +12,7 @@
 
 ## 💡 Project Description
 
-Our project build on the paper [Swapping Autoencoder for Deep Image Manipulation](https://arxiv.org/abs/2007.00653) by [Taesung Park](http://taesung.me/), [Jun-Yan Zhu](https://www.cs.cmu.edu/~junyanz/), [Oliver Wang](http://www.oliverwang.info/), [Jingwan Lu](https://research.adobe.com/person/jingwan-lu/), [Eli Shechtman](https://research.adobe.com/person/eli-shechtman/), [Alexei A. Efros](http://www.eecs.berkeley.edu/~efros/), [Richard Zhang](https://richzhang.github.io/). Our goal with this project was to make it easier for artists to use it as a tool. In that effort, we have introduced 3 interfaces to interact with a pre-trained model and edit images.
+Our project builds on the paper [Swapping Autoencoder for Deep Image Manipulation](https://arxiv.org/abs/2007.00653) by [Taesung Park](http://taesung.me/), [Jun-Yan Zhu](https://www.cs.cmu.edu/~junyanz/), [Oliver Wang](http://www.oliverwang.info/), [Jingwan Lu](https://research.adobe.com/person/jingwan-lu/), [Eli Shechtman](https://research.adobe.com/person/eli-shechtman/), [Alexei A. Efros](http://www.eecs.berkeley.edu/~efros/), [Richard Zhang](https://richzhang.github.io/). Our goal with this project was to make it easier for artists to use it as a tool. In that effort, we have introduced 3 interfaces to interact with a pre-trained model and edit images.
 
 ## 📺 Preview
 
@@ -35,7 +35,7 @@ Our project build on the paper [Swapping Autoencoder for Deep Image Manipulation
 
 ### 💻 System requirement :
 
-1. Nvidia GPU with + CUDA.
+1. Nvidia GPU + CUDA.
 2. Operating System : Any (Windows / Linux / Mac).
 
 ### 💿 Software requirement :
