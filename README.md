@@ -63,7 +63,7 @@ Head over to the [Testing and Evaluation section](https://github.com/taesungp/sw
 $ streamlit run streamlit_interface.py
 ```
 
-## 📦 Inside the box
+## 📦 Inside box
 
 Checkout our [wiki](https://github.com/saxenabhishek/swapping-autoencoder-pytorch/wiki) for more details
 
